@@ -1,0 +1,9 @@
+在client-server交流的过程中，client是个endpoint，同样server也是个endpoint
+
+camelContext上下文对象作为Application的运行环境
+endpoint作为实际处理对象
+process components处理过程
+添加Route到CamelContext
+
+官方文档地址
+https://camel.apache.org/manual/latest/processor.html

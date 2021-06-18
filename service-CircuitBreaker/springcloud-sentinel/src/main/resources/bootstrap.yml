@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: springcloud-sentinel
+server:
+  servlet:
+    context-path: /

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>springcloud-pkq</artifactId>
+        <groupId>com.turboic.cloud</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>servicetsleuth</artifactId>
+    <packaging>pom</packaging>
+    <name>servicetsleuth</name>
+    <url>http://www.example.com</url>
+    <modules>
+        <module>dubbo-sleuth-api</module>
+        <module>sleuth-nacos-service</module>
+        <module>dubbo-sleuth-consume</module>
+        <module>dubbo-sleuth-provider</module>
+        <module>dubbo-sleuth-provider2</module>
+        <module>sleuth-zipkin-server</module>
+    </modules>
+</project>

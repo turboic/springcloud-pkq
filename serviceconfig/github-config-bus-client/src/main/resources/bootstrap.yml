@@ -1,0 +1,65 @@
+configserver:
+  host: 127.0.0.1
+
+eureka:
+  instance:
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: true
+spring:
+  application:
+    name: github-config-bus-client
+  cloud:
+    config:
+      label: master
+      profile: test
+      #uri: http://localhost:8073
+      discovery:
+        enabled: true
+        #通过服务名称访问
+        service-id: github-config-bus-server
+      allow-override: true
+      enabled: true
+      fail-fast: true
+      server:
+        git:
+          bootstrap: true
+          uri: https://github.com/turboic/repotest.git
+      #定义要读取的资源文件名称前缀
+      #下面的name属性不设置，获取值显示结果就为${demo}，而不是实际对应的名称
+      name: springcloud-config
+    bus:
+      #注意：2.0版本必须配置，不然@RefreshScope更新不了，这是非常大的坑
+      id: ${spring.application.name}:${spring.cloud.config.profile}:${random.value}
+  security:
+    user:
+      name: admin
+      password: 123456
+  rabbitmq:
+    host: 10.10.10.10
+    port: 5672
+    username: zhxl
+    password: zhxl
+    virtual-host: /
+    connection-timeout: 60000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+eurekaserver:
+  username: admin
+  password: 123456
+server:
+  servlet:
+    context-path: /
+  port: 8076

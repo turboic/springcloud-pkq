@@ -1,0 +1,47 @@
+server:
+  port: 8073
+eureka:
+  instance:
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: true
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+#设置github的配置地址
+  cloud:
+    config:
+      server:
+        git:
+          #uri: https://github.com/meteor1993/SpringCloudLearning # git仓库的地址
+          #search-paths: chapter6/springcloud-config  # git仓库地址下的相对地址，可以配置多个，用,分割。
+          #配置文件的repo最好独立建立，不要太大，网络超时
+          uri: https://github.com/turboic/repotest.git # git仓库的地址
+          search-paths: springcloud-config  # git仓库地址下的相对地址，可以配置多个，用,分割。
+          #basedir: d:\config\
+          #设置强行拉取
+          force-pull: true
+          #username: 912457694@qq.com
+          #password:
+          #跳过ssl验证
+          skipSslValidation: true
+          #设置超时时间(秒)
+          timeout: 60
+          #search-paths: /**
+          #default-label: master
+      #default-application-name: springcloud-config
+        #health:
+          #repositories:
+            #check:
+            #name: check-repo
+            #label: master
+          #profiles: default

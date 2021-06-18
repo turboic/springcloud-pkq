@@ -1,0 +1,28 @@
+server:
+  port: 9395
+spring:
+  #spring-security登录密码
+  security:
+    user:
+      name: admin
+      password: 123456
+#eureka注册中心
+eureka:
+  instance:
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: true
+#暴露
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

@@ -1,0 +1,44 @@
+server:
+  port: 9530
+eureka:
+  instance:
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: false
+    healthcheck:
+      enabled: true
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+#spring-boot-rocketmq的配置
+rocketmq:
+  name-server: 10.10.10.7:9876
+  access-channel: LOCAL
+  producer:
+    #开启消息跟踪
+    enable-msg-trace: true
+    #生产者组名称
+    group: PRODUCER-GROUP
+    #最大发送消息数量
+    max-message-size: 100
+    #发送一个broker失败时候，是否查找下一个broker，单机设置为false
+    retry-next-server: false
+    #消息发送超时时间
+    send-message-timeout: 3000
+    #发送失败，重试的次数
+    retry-times-when-send-failed: 3
+    #异步发送失败，重试的次数
+    retry-times-when-send-async-failed: 3
+    #开启trace，自定义trace的topic名称，不配置使用默认值
+    customized-trace-topic: trace-topic
+    #消息压缩的门槛，默认4k
+    compress-message-body-threshold: 2048

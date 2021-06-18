@@ -1,0 +1,42 @@
+server:
+  port: 8095 #turbine-server暴露的访问端口
+
+#注册到eureka-server
+eureka:
+  instance:
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: true
+
+# 开启基于http basic的安全认证,eureka的访问用户名和密码
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+# 加载所有的端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+#将feign集成的断路器设置成有效状态
+feign:
+  hystrix:
+    enabled: true
+#turbine配置
+turbine:
+  # 被监控服务的spring.application.name
+  app-config: feign-consumer
+  cluster-name-expression: new String("default")
+  #instanceUrlSuffix: hystrix.stream
+  #：可以让同一个主机的服务通过主机名与端口号的组合来进行区分，默认情况是以host来区分不同的服务
+  #combine-host-port: true

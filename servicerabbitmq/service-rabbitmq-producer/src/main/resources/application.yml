@@ -1,0 +1,89 @@
+server:
+  port: 5572
+eureka:
+  instance:
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: true
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+
+  rabbitmq:
+    host: 10.10.10.10
+    connection-timeout: 6000
+    virtual-host: /
+    username: zhxl
+    password: zhxl
+    listener:
+      #simple direct两个候选值
+      type: simple
+      #simple的类型配置
+      simple:
+        #确认模式 auto manual none
+        acknowledge-mode: manual
+        retry:
+          stateless: true
+          #开启重试
+          enabled: true
+          initial-interval: 2000ms
+          #重试最大尝试此时
+          max-attempts: 10
+          max-interval: 20000ms
+          multiplier: 2
+          #设置simple type 并发数
+        concurrency: 5
+        #自动启动
+        auto-startup: true
+        batch-size: 1000
+        default-requeue-rejected: false
+        max-concurrency: 22
+        missing-queues-fatal: true
+        prefetch: 6000
+        #idle-event-interval:
+      #direct的类型配置
+      direct:
+        retry:
+          enabled: true
+          initial-interval: 2000ms
+          max-attempts: 5
+          stateless: true
+          multiplier: 2
+          max-interval: 20000ms
+        acknowledge-mode: manual
+        auto-startup: true
+        consumers-per-queue: 100
+        default-requeue-rejected: false
+        #idle-event-interval:
+        missing-queues-fatal: false
+        prefetch: 1000
+    cache:
+      connection:
+        #size: 1000
+        #channel connection
+        #Caused by: java.lang.IllegalArgumentException: When the cache mode is 'CHANNEL', the connection cache size cannot be configured.
+        mode: channel
+      channel:
+        size: 2000
+    requested-heartbeat: 6000
+    publisher-returns: true
+      #correlated相互依赖的 none:没有 simple:简单
+    publisher-confirm-type: correlated
+    dynamic: true
+    #全局的设置
+    #publisher-confirm-type: correlated
+    #publisher-returns: true
+
+management:
+  health:
+    rabbit:
+      enabled: true

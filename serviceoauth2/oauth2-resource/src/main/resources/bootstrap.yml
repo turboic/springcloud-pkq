@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: oauth2-resource
+server:
+  servlet:
+    context-path: /
+    session:
+      cookie:
+        name: OAUTH2-CLIENT-SESSIONID

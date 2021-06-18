@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.turboic.cloud.LiebeMd5ConfigAutoConfiguration
+org.springframework.cloud.bootstrap.BootstrapConfiguration=\
+  com.turboic.cloud.LiebeMd5ConfigBootstrapConfiguration

@@ -1,0 +1,42 @@
+server:
+  port: 9712
+eureka:
+  instance:
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: true
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+#dubbo配置
+# Base packages to scan Dubbo Components (e.g @Service , @Reference)
+dubbo:
+  application:
+    name: dubbo-starter-provider
+    id: dubbo-starter-provider
+    architecture: dubbo-spring-boot
+  #dubbo协议
+  protocol:
+    name: dubbo
+    port: 20880
+  monitor:
+    protocol: dubbo
+    address: N/A
+  #dubbo注册
+  registry:
+    id: dubbo-starter-provider-service
+    address: localhost:2181
+    protocol: zookeeper
+    port: 2181
+    timeout: 600000
+  scan:
+    base-packages: com.turboic.cloud.service.impl

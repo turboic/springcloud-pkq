@@ -1,0 +1,76 @@
+server:
+  port: 9860
+
+eureka:
+  instance:
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: true
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+
+zuul:
+  sensitiveHeaders: Authorization
+  ignored-headers: Access-Control-Allow-Credentials,Access-Control-Allow-Origin,Vary,X-Frame-Options
+  #主机每个路由最大的连接数
+  host:
+    # 最大连接数，默认为200
+    max-total-connections: 200
+    # 单个路由可以使用的最大连接数，默认为20
+    max-per-route-connections: 20
+    # http client中从connection pool中获得一个connection的超时时间，默认为-1，不超时
+    connection-request-timeout-millis: -1
+    # 连接建立的超时时间；，默认为2000ms
+    connect-timeout-millis: 2000
+    # 响应超时时间，默认为10000ms
+    socket-timeout-millis: 10000
+  #配置可重试
+  retryable: true
+  #设置请求体可以被追踪
+  trace-request-body: true
+  #所有路由请求的前缀
+  prefix: /zuul-api
+  add-proxy-headers: true
+  routes:
+    #浏览器访问默认地址http://localhost:9860/zuul-api/liebe
+    #默认跳转到bilibili首页面，下面的liebe为自定义名称，可使用微服务的application-name做为serviceId
+    liebe:
+      path: /liebe/**
+      url: https://www.bilibili.com/
+
+    #我的微服务
+    skywalking-wo:
+      serviceId: skywalking-wo
+      path: /skywalking-wo/**
+      stripPrefix: true
+
+ribbon:
+  eureka:
+    enable: true
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+          strategy: SEMAPHORE #Request请求头设置token
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" #注意这里*要加引号，暴露全部，也可以只暴露相应endpoint
+  endpoint:
+    routes:
+      enabled: true # 默认为true，可以省略

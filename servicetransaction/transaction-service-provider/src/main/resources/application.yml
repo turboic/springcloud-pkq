@@ -1,0 +1,33 @@
+server:
+  port: 9602
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+  cloud:
+    nacos:
+      discovery:
+        metadata:
+          user.name: admin
+          user.password: 123456
+        enabled: true
+        naming-load-cache-at-start: true
+        password: nacos
+        username: nacos
+        heart-beat-interval: 6000
+        namespace: public
+        group: group
+        service: ${spring.application.name}
+        ip-delete-timeout: 600000
+        instance-enabled: true
+        server-addr: localhost:8848
+#全部放开
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS

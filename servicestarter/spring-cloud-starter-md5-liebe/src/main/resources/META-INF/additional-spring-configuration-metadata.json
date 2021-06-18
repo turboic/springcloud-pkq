@@ -1,0 +1,20 @@
+{"properties": [
+    {
+      "name": "spring.cloud.liebe.md5.config.host",
+      "type": "java.lang.String",
+      "defaultValue": "localhost:8080",
+      "description": "default server address."
+    },
+    {
+      "name": "spring.cloud.liebe.md5.config.username",
+      "type": "java.lang.String",
+      "defaultValue": "${spring.security.user.name}",
+      "description": "default username value."
+    },
+    {
+      "name": "spring.cloud.liebe.md5.config.password",
+      "type": "java.lang.String",
+      "defaultValue": "${spring.security.user.password}",
+      "description": "default password value."
+    }
+]}

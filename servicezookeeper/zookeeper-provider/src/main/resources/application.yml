@@ -1,0 +1,27 @@
+server:
+  port: 9969
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+#spring cloud集成zookeeper的配置
+  cloud:
+    zookeeper:
+      discovery:
+        enabled: true
+        instance-id: application-register-id
+        register: true
+        root: /services
+      connect-string: localhost:2181
+      max-sleep-ms: 5000
+      max-retries: 22
+      base-sleep-time-ms: 50
+
+
+
+
+
+
+
+

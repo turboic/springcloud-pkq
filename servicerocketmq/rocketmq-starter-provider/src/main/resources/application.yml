@@ -1,0 +1,34 @@
+server:
+  port: 9722
+eureka:
+  instance:
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: true
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+
+#rocket配置
+rocketmq:
+  access-channel: CLOUD
+  name-server: 10.10.10.6:9876
+  producer:
+    enable-msg-trace: true
+    max-message-size: 1000
+    retry-times-when-send-failed: 5
+    group: producerGroupForLiebe
+    send-message-timeout: 60000
+    retry-next-server: false
+    customized-trace-topic: liebe
+    compress-message-body-threshold: 4096
+    retry-times-when-send-async-failed: 5

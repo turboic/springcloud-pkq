@@ -1,0 +1,58 @@
+1、安装编译的基础环境库文件，通过yum直接安装
+yum install git gcc gcc-c++ make automake autoconf libtool pcre pcre-devel zlib zlib-devel openssl-devel wget vim -y
+
+2、下载安装文件的地址
+https://github.com/happyfish100 
+
+wget https://github.com/happyfish100/libfastcommon/archive/refs/tags/V1.0.51.zip
+
+
+wget https://github.com/happyfish100/fastdfs/archive/refs/tags/V6.07.zip
+
+wget https://github.com/happyfish100/fastdfs-nginx-module/archive/refs/tags/V1.22.zip
+
+
+
+3、编译安装
+cd libfastcommon-1.0.51/ ./make.sh && ./make.sh install 
+
+
+mv fastdfs-6.07/ fastdfs && cd fastdfs && ./make.sh && ./make.sh install
+
+mv fastdfs-nginx-module-1.22/ fastdfs-nginx-module && cp -r fastdfs-nginx-module/src/mod_fastdfs.conf /etc/fdfs
+
+./configure  --prefix=/usr/local/nginx  --sbin-path=/usr/local/nginx/sbin/nginx --conf-path=/usr/local/nginx/conf/nginx.conf --error-log-path=/usr/local/nginx/logs/error.log  --http-log-path=/usr/local/nginx/logs/access.log  --pid-path=/usr/local/nginx/pid/nginx.pid --lock-path=/usr/local/nginx/pid/nginx.lock  --user=nginx --group=nginx --with-http_ssl_module --with-http_stub_status_module --with-http_gzip_static_module --http-client-body-temp-path=/usr/local/nginx/client/ --http-proxy-temp-path=/usr/local/nginx/proxy/ --http-fastcgi-temp-path=/usr/local/nginx/fcgi/ --http-uwsgi-temp-path=/usr/local/nginx/uwsgi --http-scgi-temp-path=/usr/local/nginx/scgi --with-pcre --add-module=/usr/local/fastdfs-nginx-module/src
+make && make instalx  
+
+
+
+4、配置修改()/etc/fdfs目录下)
+5、启动程序
+/etc/init.d/fdfs_trackerd start 
+/etc/init.d/fdfs_storaged start
+
+nginx程序启动出现错误
+nginx: [emerg] getpwnam("nginx") failed
+解决办法：
+useradd -s /sbin/nologin -M nginx
+id nginx
+
+file: ini_file_reader.c, line: 1058, include file "http.conf" not exists, line: "#include http.conf"
+解决方法：将安装包内的文件conf下http.conf和mime.conf放到etc/fdfs目录下
+
+访问地址出现
+http://10.10.10.7/group1/M00/00/00/CgoKB2C8csWAbnbYAALGxvUwQ5I436.jpg
+400 Bad Request
+nginx/1.21.0
+解决方案：
+vim /etc/fdfs/mod_fastdfs.conf
+    url_have_group_name = true
+	然后
+	/etc/init.d/fdfs_trackerd restart
+	/etc/init.d/fdfs_storaged restart
+
+6、程序客户端测试
+[root@10 liebe]# /usr/bin/fdfs_upload_file  /etc/fdfs/client.conf 1.jpg 
+group1/M00/00/00/CgoKB2C8csWAbnbYAALGxvUwQ5I436.jpg
+
+

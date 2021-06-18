@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>springcloud-pkq</artifactId>
+        <groupId>com.turboic.cloud</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>servicetransaction</artifactId>
+    <packaging>pom</packaging>
+    <name>servicetransaction</name>
+    <url>http://www.example.com</url>
+    <modules>
+       <!-- <module>transaction-jpa</module>-->
+        <module>transaction-mybatis</module>
+        <!--<module>transaction-tx-lcn</module>
+        <module>transaction-admin-server</module>
+        <module>transaction-service-provider</module>
+        <module>transaction-nacos-config</module>
+        <module>oauth2-liebe-server</module>-->
+    </modules>
+</project>

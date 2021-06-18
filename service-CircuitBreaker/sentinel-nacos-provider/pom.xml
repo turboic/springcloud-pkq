@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>service-CircuitBreaker</artifactId>
+    <groupId>com.turboic.cloud</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>sentinel-nacos-provider</artifactId>
+  <name>sentinel-nacos-provider</name>
+  <properties>
+    <swagger.version>2.9.2</swagger.version>
+    <mybatis.plus.version>3.3.2</mybatis.plus.version>
+    <druid.starter.version>1.1.22</druid.starter.version>
+    <com.alibaba.cloud.starter.version>2.2.1.RELEASE</com.alibaba.cloud.starter.version>
+  </properties>
+  <dependencies>
+
+    <!-- 引入的nacos服务发限 -->
+    <dependency>
+      <groupId>com.alibaba.cloud</groupId>
+      <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+      <version>${com.alibaba.cloud.starter.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba.cloud</groupId>
+      <artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
+      <version>${com.alibaba.cloud.starter.version}</version>
+    </dependency>
+    <!--引入sentinel依赖-->
+    <dependency>
+      <groupId>com.alibaba.cloud</groupId>
+      <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+      <version>${com.alibaba.cloud.starter.version}</version>
+    </dependency>
+    <!-- 代码生成器模板 -->
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+    </dependency>
+    <!--引入Spring Mvc功能-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
+    </dependency>
+    <!--引入springboot监控信息-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-actuator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-actuator-autoconfigure</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.turboic.cloud</groupId>
+      <artifactId>dubbo-common-interface</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba.cloud</groupId>
+      <artifactId>spring-cloud-starter-dubbo</artifactId>
+      <version>${com.alibaba.cloud.starter.version}</version>
+    </dependency>
+  </dependencies>
+</project>

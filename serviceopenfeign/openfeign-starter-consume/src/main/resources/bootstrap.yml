@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: openfeign-starter-consume
+eurekaserver:
+  username: admin
+  password: 123456
+server:
+  servlet:
+    context-path: /

@@ -1,0 +1,93 @@
+server:
+  port: 9390
+#eureka-server注册中心
+eureka:
+  instance:
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: true
+#spring-security安全设置
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+  cloud:
+    stream:
+      function:
+        #设置批量模式
+        batch-mode: true
+      bindings:
+        #KafkaInputChannel类中定义的通道名称
+        #配置kafka的消费者
+        kafkaConsume:
+          #kafka的主题
+          destination: kafka-provider-liebe
+          #消息内容的类型格式
+          content-type: application/json
+          group: kafka-liebe
+          consumer:
+            #设置消费端自动提交关闭
+            autoCommitOffset: false
+            autoCommitOnError: false
+            #开启自动负载均衡
+            autoRebalanceEnabled: true
+            resetOffsets: false
+            #(实时生产，实时消费，不会从头开始消费)
+            startOffset: latest
+            #设置消费端并发数
+            concurrency: 1
+            #每次处理后需要确认
+            ackEachRecord: true
+            enableDlq: false
+            recoveryInterval: 5000
+            useNativeEncoding: true
+      default-binder: kafka
+      #kafka的broker的设置
+      kafka:
+        binder:
+          #自动创建topic
+          auto-create-topics: true
+          #kafka连接的服务器
+          brokers: 127.0.0.1:9092
+          #kafka的服务器的默认端口
+          #defaultBrokerPort: 9092
+          #自动添加分区
+          auto-add-partitions: true
+          #健康超时时间，默认10
+          healthTimeout: 30
+          #需要确认
+          requiredAcks: all
+          #最小分区数量
+          minPartitionCount: 0
+          #broker开启事务
+          transaction:
+            transactionIdPrefix: tx-
+            producer:
+              compression-type: gzip
+          configuration:
+            autoCommitOffset: false
+  #Must set retries to non-zero when using the idempotent producer.
+  kafka:
+    producer:
+      retries: 22
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      enable-auto-commit: false
+      client-id: consumer-kafka
+#暴露所有
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

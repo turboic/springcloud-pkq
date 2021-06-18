@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd        http://dubbo.apache.org/schema/dubbo        http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+    <!--定义服务提供者名称-->
+    <dubbo:application name="demo-service-provider"/>
+    <!--服务注册到Zookeeper中去-->
+    <dubbo:registry protocol="zookeeper" address="127.0.0.1:2181"/>
+    <!--dubbo通信协议-->
+    <dubbo:protocol name="dubbo" port="20880"/>
+    <!--定义dubbo服务-->
+    <dubbo:service interface="org.example.service.DemoService" ref="demoService"/>
+    <!--定义接口实现类-->
+    <bean id = "demoService" class="org.example.service.impl.DemoServiceImpl"/>
+</beans>

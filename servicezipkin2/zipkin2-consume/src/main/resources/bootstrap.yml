@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: zipkin2-consume
+
+
+eurekaserver:
+  username: admin
+  password: 123456
+server:
+  servlet:
+    context-path: /

@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: sleuth-zipkin-server
+server:
+  servlet:
+    context-path: /

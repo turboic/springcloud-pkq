@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>这是单点登录资源的测试页面</title>
+</head>
+<body>
+<h3 th:text="${name}">欢迎访问人工智能分析系统</h3>
+<div>
+    <p>授权码:</p>
+    <input th:type="text" th:value="${code}" id="code" name="code"/>
+    <input th:type="text" th:value="${date}" id="date" name="date"/>
+</div>
+<div>
+    <a th:href="@{http://www.baidu.com}" >跳转百度</a>
+    <a th:href="@{/resource/getToken(code=${code})}" target="_blank">生成token</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: dubbo-sleuth-consume
+server:
+  servlet:
+    context-path: /

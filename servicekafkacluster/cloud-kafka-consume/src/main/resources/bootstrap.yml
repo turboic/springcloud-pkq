@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: cloud-kafka-consume
+eurekaserver:
+  username: admin
+  password: 123456
+server:
+  servlet:
+    context-path: /

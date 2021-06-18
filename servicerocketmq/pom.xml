@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>springcloud-pkq</artifactId>
+        <groupId>com.turboic.cloud</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>servicerocketmq</artifactId>
+    <packaging>pom</packaging>
+    <name>servicerocketmq</name>
+    <url>http://www.example.com</url>
+    <modules>
+        <module>rocketmq-starter-provider</module>
+        <module>rocketmq-starter-reference</module>
+        <module>spring-boot-rocketmq-producer</module>
+        <module>spring-boot-rocketmq-consume</module>
+        <module>boot-rocketmq-starter-consume</module>
+        <module>boot-rocketmq-starter-producer</module>
+    </modules>
+</project>

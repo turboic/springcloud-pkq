@@ -1,0 +1,52 @@
+server:
+  port: 9092
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+  cloud:
+    stream:
+      binders:
+        turboic:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: 10.10.10.10
+                port: 5672
+                username: zhxl
+                password: zhxl
+                virtual-host: /
+                connection-timeout: 30000
+      bindings:
+        customDelayOutput:
+          binders: turboic
+          destination: testDelay
+          group: ubuntu
+          content-type: application/json
+        customDelayInput:
+          binders: turboic
+          destination: testDelay
+          group: ubuntu
+          content-type: application/json
+      #输入输出都需要设置演示队列
+      rabbit:
+        bindings:
+          customDelayOutput:
+            producer:
+              ##延迟队列的开启
+              delayed-exchange: true
+          customDelayInput:
+            consumer:
+              delayed-exchange: true
+#运行控制台出现Rabbit health check failed，关闭健康检查
+management:
+  health:
+    rabbit:
+      enabled: false
+
+
+
+
+

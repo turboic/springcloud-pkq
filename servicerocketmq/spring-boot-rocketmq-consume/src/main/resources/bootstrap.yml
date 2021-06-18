@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: spring-boot-rocketmq-consume
+eurekaserver:
+  username: admin
+  password: 123456
+server:
+  servlet:
+    context-path: /

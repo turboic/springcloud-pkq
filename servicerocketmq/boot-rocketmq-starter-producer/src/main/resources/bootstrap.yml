@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: boot-rocketmq-starter-producer
+eurekaserver:
+  username: admin
+  password: 123456
+server:
+  servlet:
+    context-path: /

@@ -1,0 +1,24 @@
+七月 12, 2020 12:19:39 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: find java src paths:  [D:\cloud\springcloud-pkq\serviceswagger2\document-api-ui\src\main\java\]
+七月 12, 2020 12:19:39 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: project type not set, try to figure out...
+七月 12, 2020 12:19:39 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: start find controllers in path : D:\cloud\springcloud-pkq\serviceswagger2\document-api-ui\src\main\java\
+七月 12, 2020 12:19:39 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: find controller file : DocumentApiUiController.java
+七月 12, 2020 12:19:39 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: start to parse controller file : DocumentApiUiController.java
+七月 12, 2020 12:19:39 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: success to parse controller file : DocumentApiUiController.java
+七月 12, 2020 12:19:39 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: generate api docs start...
+七月 12, 2020 12:19:39 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: start to generate docs for controller file : D:\cloud\springcloud-pkq\serviceswagger2\document-api-ui\src\main\java\com\turboic\cloud\controller\DocumentApiUiController.java
+七月 12, 2020 12:19:40 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: success to generate docs for controller file : D:\cloud\springcloud-pkq\serviceswagger2\document-api-ui\src\main\java\com\turboic\cloud\controller\DocumentApiUiController.java
+七月 12, 2020 12:19:40 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: generate index start !!!
+七月 12, 2020 12:19:40 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: generate index done !!!
+七月 12, 2020 12:19:40 下午 io.github.yedaxia.apidocs.LogUtils info
+信息: info: generate api docs done !!!

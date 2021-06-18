@@ -1,0 +1,61 @@
+server:
+  port: 9601
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+  #发送邮件的配置
+  #mail:
+    #host: smtp.qq.com
+    #username: xxxxxxxxxx@qq.com
+    #password: 邮箱的密码
+    #default-encoding: UTF-8
+    #test-connection: false
+    #protocol: smtp
+  boot:
+    admin:
+      notify:
+        discord:
+          enabled: true
+          #mail:
+          #开启email通知,服务down时候将自动发送邮件
+          # enabled: false
+          #base-url: http://localhost:9601
+          #to: xxxxxxxxxx@qq.com
+          #from: xxxxxxxxxx@qq.com
+          #cc: xxxxxxxxxx@qq.com
+      routes:
+        # spring boot默认开启env、metrics、dump、jolokia、info等节点，这里开启其它监控节点
+        endpoints: env,metrics,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,loggers,auditevents,hystrix.stream,activiti
+      discovery:
+        enabled: true
+      ui:
+        remember-me-enabled: true
+  #spring-cloud-nacos配置
+  cloud:
+    nacos:
+      discovery:
+        metadata:
+          user.name: admin
+          user.password: 123456
+        enabled: true
+        naming-load-cache-at-start: true
+        password: nacos
+        username: nacos
+        heart-beat-interval: 6000
+        namespace: public
+        group: group
+        service: ${spring.application.name}
+        ip-delete-timeout: 600000
+        instance-enabled: true
+        server-addr: localhost:8848
+#全部放开
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS

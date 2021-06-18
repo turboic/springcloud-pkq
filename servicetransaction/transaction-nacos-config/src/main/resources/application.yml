@@ -1,0 +1,29 @@
+server:
+  port: 9605
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        naming-load-cache-at-start: true
+        password: nacos
+        username: nacos
+        heart-beat-interval: 6000
+        namespace: public
+        group: group
+        service: ${spring.application.name}
+        ip-delete-timeout: 600000
+        instance-enabled: true
+        server-addr: localhost:8848
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS

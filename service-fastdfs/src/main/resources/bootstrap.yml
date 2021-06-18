@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: service-fastdfs
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+      additional-paths: src/main/java #重启目录
+      exclude: WEB-INF/**
+eurekaserver:
+  username: admin
+  password: 123456
+server:
+  servlet:
+    context-path: /

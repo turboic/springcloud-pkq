@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: dubbo-provider
+server:
+  servlet:
+    context-path: /

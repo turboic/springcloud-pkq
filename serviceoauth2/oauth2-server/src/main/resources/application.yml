@@ -1,0 +1,18 @@
+server:
+  port: 3002
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+management:
+  endpoint:
+    health: true
+
+
+
+
+
+
+
+

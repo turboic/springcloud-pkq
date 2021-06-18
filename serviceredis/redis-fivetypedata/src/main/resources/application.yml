@@ -1,0 +1,48 @@
+server:
+  port: 9801
+eureka:
+  instance:
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: true
+
+
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+#redis的配置
+  redis:
+    timeout: 60000
+    password:
+    host: 10.10.10.6
+    port: 6379
+    client-name: redis-client
+    jedis:
+      pool:
+        max-active: 10
+        max-idle: 10
+        max-wait: -1
+        min-idle: 2
+  cache:
+    redis:
+      cache-null-values: false
+      use-key-prefix: false
+      key-prefix: liebe
+  data:
+    redis:
+      repositories:
+        enabled: true
+#redis配置
+management:
+  health:
+    redis:
+      enabled: true

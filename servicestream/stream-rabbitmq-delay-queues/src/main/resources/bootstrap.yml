@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: stream-rabbitmq-delay-queues
+
+
+eurekaserver:
+  username: admin
+  password: 123456
+server:
+  servlet:
+    context-path: /

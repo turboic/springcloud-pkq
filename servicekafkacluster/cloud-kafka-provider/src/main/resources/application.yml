@@ -1,0 +1,85 @@
+server:
+  port: 9391
+eureka:
+  instance:
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: true
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+  cloud:
+    stream:
+      function:
+        #设置批量模式
+        batch-mode: true
+      bindings:
+        #KafkaSourceChannel类中定义的通道名称
+        #配置生产者
+        kafkaProvider:
+          #kafka的主题
+          destination: kafka-provider-liebe
+          #消息内容的类型格式
+          #content-type: text/xml
+          content-type: application/json
+          producer:
+            #批量数量
+            bufferSize: 19384
+            maxRequestSize: 1048576
+            #开启异步，默认为false
+            sync: true
+            #生产者设置压缩类型
+            configuration:
+              compression:
+                type: gzip
+              #触发异常，重复消费10次，起作用
+              retries: 10
+            #关闭超时，默认30
+            closeTimeout: 60
+            batchTimeout: 0
+            useNativeEncoding: true
+      default-binder: kafka
+      kafka:
+        binder:
+          #自动创建topic
+          auto-create-topics: true
+          #kafka连接的服务器
+          brokers: 127.0.0.1:9092
+          #kafka的服务器的默认端口
+          #defaultBrokerPort: 9092
+          #自动添加分区
+          auto-add-partitions: true
+          #健康超时时间，默认10
+          healthTimeout: 30
+          #需要确认
+          requiredAcks: all
+          #最小分区数量
+          minPartitionCount: 0
+          #broker开启事务
+          transaction:
+            transactionIdPrefix: tx-
+  #Must set retries to non-zero when using the idempotent producer.
+  kafka:
+    producer:
+      retries: 22
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+#spring cloud 集成kafka stream
+

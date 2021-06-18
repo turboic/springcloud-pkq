@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd        http://dubbo.apache.org/schema/dubbo        http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+    <!--定义dubbo消费者名称-->
+    <dubbo:application name="dubbo-consumer-application"/>
+    <!--使用zookeeper注册dubbo-->
+    <!--注册使用consumer的group概念-->
+    <dubbo:registry protocol="zookeeper" address="127.0.0.1:2181"/>
+    <!--监控中心协议，如果为protocol=“registry”，表示从注册中心发现监控中心地址，否则直连监控中心。-->
+    <dubbo:monitor protocol="registry"/>
+    <!--指定注册中心：不使用注册中心-->
+    <!-- <dubbo:registry address="N/A"/>-->
+    <!--消费服务-->
+    <!--  <dubbo:reference id="apiService" interface="com.turboic.cloud.dubbo.HelloService" url="dubbo://localhost:20880"/>-->
+    <!-- check="false" 非启动检查服务提供者的有效性 -->
+    <bean id ="demoCallback" class = "com.turboic.cloud.callback.NotifyImpl" />
+    <dubbo:reference id="apiService" check="false" interface="com.turboic.cloud.dubbo.HelloService">
+        <dubbo:method name="execute" async="true" onreturn = "demoCallback.onReturn" onthrow="demoCallback.onThrow" />
+    </dubbo:reference>
+    <dubbo:annotation package="com.turboic.cloud.dubbo"/>
+</beans>

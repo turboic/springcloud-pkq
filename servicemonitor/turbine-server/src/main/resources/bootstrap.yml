@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: turbine-server
+server:
+  servlet:
+    context-path: /

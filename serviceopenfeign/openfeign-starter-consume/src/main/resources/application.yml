@@ -1,0 +1,51 @@
+server:
+  port: 9724
+eureka:
+  instance:
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: true
+    #暴露所有
+    #一直显示
+  endpoint:
+    health:
+      show-details: ALWAYS
+#定义admin-server的访问地址,必填项，否则admin-server页面不显示
+spring:
+  boot:
+    admin:
+      client:
+        url: http://${eureka.instance.hostname}:5000
+        username: admin
+        password: 123456
+        instance:
+          #按照IP地址注册,通过admin-client进入可查看客户端的监控信息啦
+          prefer-ip: true
+  security:
+    user:
+      name: admin
+      password: 123456
+#rocket配置
+rocketmq:
+  access-channel: CLOUD
+  name-server: 10.10.10.6:9876
+  consumer:
+    customized-trace-topic: liebe
+    compress-message-body-threshold: 4096
+#配置日志的输出路径
+logging:
+  file:
+    path: "/logs/openfeign-starter-consume.log"  # 日志输出路径
+#全部放开
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

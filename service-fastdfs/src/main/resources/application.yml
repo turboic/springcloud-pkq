@@ -1,0 +1,61 @@
+server:
+  port: 9765
+spring:
+  #spring-security登录密码
+  security:
+    user:
+      name: admin
+      password: 123456
+#eureka注册中心
+eureka:
+  instance:
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: true
+#暴露
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+#配置
+#fastdfs-client
+fdfs:
+  pool:
+    block-when-exhausted: false
+    evictor-shutdown-timeout-millis: 3000
+    fairness: false
+    jmx-enabled: true
+    lifo: true
+    jmx-name-prefix: jmx-name-prefix
+    max-total: 10
+    max-total-per-key: 5
+    max-idle-per-key: 3
+    max-wait-millis: 3000
+    min-idle-per-key: 1
+    min-evictable-idle-time-millis: 1000
+    test-on-borrow: true
+    test-on-create: true
+    test-on-return: true
+    test-while-idle: true
+    time-between-eviction-runs-millis: 5000
+    jmx-name-base: jmx-name-base
+    soft-min-evictable-idle-time-millis: 5000
+    num-tests-per-eviction-run: 1
+    #eviction-policy-class-name:
+  so-timeout: 30000
+  connect-timeout: 20000
+  thumb-image:
+    height: 150
+    width: 150
+  tracker-list:
+    - 10.10.10.7:22122
+  web-server-url: 10.10.10.7

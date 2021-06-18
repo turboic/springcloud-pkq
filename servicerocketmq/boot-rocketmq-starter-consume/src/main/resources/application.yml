@@ -1,0 +1,34 @@
+server:
+  port: 9529
+eureka:
+  instance:
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: false
+    healthcheck:
+      enabled: true
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+rocketmq:
+  name-server: 10.10.10.7:9876
+  access-channel: LOCAL
+  consumer:
+    group: CONSUMER-GROUP
+    pull-batch-size: 100
+    selector-expression: '*'
+    topic: liebe
+    selector-type: TAG
+    message-model: CLUSTERING
+    #listeners:
+    customized-trace-topic: consumer-trace-topic
+#spring-boot-rocketmq的配置

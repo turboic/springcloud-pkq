@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd        http://dubbo.apache.org/schema/dubbo        http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+    <!--定义服务提供者名称-->
+    <dubbo:application name="dubbo-provider-application"/>
+    <!--服务注册到Zookeeper中去-->
+    <dubbo:registry protocol="zookeeper" address="127.0.0.1:2181"/>
+    <!--监控中心协议，如果为protocol=“registry”，表示从注册中心发现监控中心地址，否则直连监控中心。-->
+    <dubbo:monitor protocol="registry"/>
+    <!--指定注册中心：不使用注册中心-->
+    <!-- <dubbo:registry address="N/A"/>-->
+    <!--dubbo通信协议-->
+    <dubbo:protocol name="dubbo" port="-1"/>
+    <!--定义dubbo服务-->
+    <!--配置负载均衡的策略,roundrobin表示平均分配的策略-->
+    <dubbo:service interface="com.turboic.cloud.dubbo.HelloService" ref="apiService" loadbalance="roundrobin"/>
+    <!--定义接口实现类-->
+    <bean id = "apiService" class="com.turboic.cloud.dubbo.ProviderService"/>
+    <!--扫描dubbo的包目录-->
+    <dubbo:annotation package="com.turboic.cloud.dubbo"/>
+</beans>

@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: transaction-tx-lcn
+server:
+  servlet:
+    context-path: /

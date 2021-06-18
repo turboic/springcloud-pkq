@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: oauth2-liebe-server
+eurekaserver:
+  username: admin
+  password: 123456
+server:
+  servlet:
+    context-path: /oauth2liebe

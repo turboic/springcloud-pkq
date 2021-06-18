@@ -1,0 +1,122 @@
+server:
+  port: 8082
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+  #nacos的配置
+  cloud:
+    nacos:
+      discovery:
+        cluster-name: DEFAULT
+        enabled: true
+        register-enabled: true
+        ip-delete-timeout: 30000
+        heart-beat-interval: 30000
+        group: DEFAULT_GROUP
+        server-addr: ${spring.cloud.nacos.server-addr}
+        username: ${spring.cloud.nacos.username}
+        password: ${spring.cloud.nacos.password}
+        watch:
+          enabled: true
+        secure: false
+        service: ${spring.application.name}
+        ephemeral: true
+        heart-beat-timeout: 30000
+        #向服务注册的ip地址，不设置，将会执行自动的探测
+        #ip: 127.0.0.1
+        weight: 2
+        instance-enabled: true
+        port: -1
+        watch-delay: 30000
+      username: nacos
+      password: nacos
+      server-addr: localhost:8848
+    #配置sentinel
+    sentinel:
+      enabled: true
+      web-context-unify: true
+      metric:
+        charset: UTF-8
+      flow:
+        coldFactor: 3
+      transport:
+        dashboard: 127.0.0.1:8080
+        port: 8719
+        heartbeat-interval-ms: 30000
+        client-ip: 127.0.0.1
+      eager: true
+      filter:
+        url-patterns: /**
+        enabled: true
+      log:
+        switch-pid: false
+      http-method-specify: false
+#暴露
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+#开始feign sentinel
+feign:
+  sentinel:
+    enabled: true
+
+#dubbo的服务配置
+dubbo:
+  application:
+    id: ${spring.application.name}
+    name: ${spring.application.name}
+    architecture: dubbo-spring-cloud
+    registry:
+      id: ${spring.application.name}
+      address: ${spring.cloud.nacos.discovery.server-addr}
+      username: ${spring.cloud.nacos.username}
+      password: ${spring.cloud.nacos.password}
+      timeout: 300000
+      check: true
+      weight: 1
+      group: DEFAULT_GROUP
+      protocol: nacos
+      port: 8848
+    scan:
+      base-packages: com.turboic.cloud.dubbo
+    monitor:
+      protocol: nacos
+      address: nacos://${spring.cloud.nacos.discovery.server-addr}
+      username: ${spring.cloud.nacos.username}
+      password: ${spring.cloud.nacos.password}
+      group: DEFAULT_GROUP
+      isDefault: true
+    qos-accept-foreign-ip: true
+    qos-enable: true
+  #协议配置
+  protocol:
+    name: dubbo
+    #port: 20880
+    port: -1
+    transporter: netty
+    dispatcher: all
+    threadpool: fixed
+    iothreads: 9
+    corethreads: 3
+    threadname: thread-protocol
+    server: netty
+    client: netty
+    threads: 100
+    queues: 0
+    buffer: 8192
+    accepts: 1000
+    payload: 8388608
+  #消费者配置
+  consumer:
+    timeout: 3000
+    client: netty
+  #订阅服务
+  cloud:
+    subscribed-services: ''
+
+
+

@@ -1,0 +1,47 @@
+server:
+  port: 5000 #admin-server暴露的访问端口
+
+eureka:
+  instance:
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: true
+
+
+#暴露所有
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+# 开启基于http basic的安全认证,eureka的访问用户名和密码
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+  boot:
+    admin:
+      notify:
+        discord:
+          enabled: true
+      routes:
+          # spring boot默认开启env、metrics、dump、jolokia、info等节点，这里开启其它监控节点
+        endpoints: env,metrics,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,loggers,auditevents,hystrix.stream,activiti
+        #admin-server中集成turbine-server
+        turbine:
+          clusters: default
+          location: turbine-server
+
+#配置日志的输出路径
+logging:
+  file:
+    path: "/logs/boot-admin-sample.log"  # 日志输出路径

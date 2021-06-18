@@ -1,0 +1,89 @@
+server:
+  port: 9091
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+  cloud:
+    stream:
+      binders:
+        local_rabbit:
+          type: rabbit
+          environment: #配置rabbimq连接环境
+            spring:
+              rabbitmq:
+                host: 10.10.10.10
+                #此处的端口是5672，而不是15672
+                port: 5672
+                username: zhxl
+                password: zhxl
+                virtual-host: /
+                connection-timeout: 30000
+      bindings:
+        #名称与自定义接口中名称保持一致
+        customOutput:
+        #默认输出通道是output，自定义的通道是customOutput
+        #output:
+          binders: local_rabbit
+          #liebe表示rabbitmq中exchange的名称
+          #生成的队列就是liebe.webchat
+          destination: liebe
+          #开启group，就会生成queues->liebe.webchat
+          group: queues
+          content-type: application/json
+        #默认输入通道是input，自定义的通道是customInput
+        #名称与自定义接口中名称保持一致
+        customInput:
+          #input:
+          binders: local_rabbit
+          #liebe表示rabbitmq中exchange的名称
+          destination: liebe
+          #开启group，就会生成queues->liebe.webchat
+          group: queues
+          content-type: application/json
+          consumer:
+            #如果消息发送失败，默认重试的次数
+            max-attempts: 300
+            concurrency: 1
+      rabbit:
+        bindings:
+          customOutput:
+            producer:
+              #指定交换机类型
+              #fanout,direct,headers,topic(默认）
+              exchange-type: fanout
+          customInput:
+            consumer:
+              #指定交换机类型fanout,direct,headers,topic(默认）
+              exchange-type: fanout
+              #手动确认消费者接收完成消息
+              #acknowledge-mode: manual
+              # maxumum concurrency of this consumer (threads)
+              max-concurrency: 1
+              #每个消费者线程预读5个消息
+              # number of prefetched messages pre consumer thread
+              prefetch: 1
+              #设置true重试发送失败的消息，设置为false将被丢弃或者抛入死信队列
+              # true to requeue rejected messages, false to discard (or route to DLQ)
+              requeue-rejected: true
+              # republish failures to the DLQ with diagnostic headers
+              # 重新发布失败的信息到死信队列中去使用diagnostic headers
+              #消息消费失败的造成挤压，可以自动到死信队列处理了
+              #只有死信队列存在的时候，才可设置成true
+              republish-to-dlq: false
+              #持久化订阅
+              #durable-subscription: true
+              #绑定routingKey
+              #binding-routing-key: douyin
+#运行控制台出现Rabbit health check failed，关闭健康检查
+
+management:
+  health:
+    rabbit:
+      enabled: false
+
+
+
+
+

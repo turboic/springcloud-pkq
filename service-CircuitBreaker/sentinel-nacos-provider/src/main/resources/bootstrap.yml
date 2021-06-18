@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: sentinel-nacos-provider
+server:
+  servlet:
+    context-path: /

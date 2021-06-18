@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: dubbo-consumer-2
+server:
+  servlet:
+    context-path: /

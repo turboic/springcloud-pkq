@@ -1,0 +1,174 @@
+server:
+  port: 9603
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+  cloud:
+    #注册应用的信息
+    nacos:
+      discovery:
+        metadata:
+          user.name: admin
+          user.password: 123456
+        enabled: true
+        naming-load-cache-at-start: true
+        password: nacos
+        username: nacos
+        heart-beat-interval: 6000
+        namespace: public
+        group: group
+        service: ${spring.application.name}
+        ip-delete-timeout: 600000
+        instance-enabled: true
+        server-addr: localhost:8848
+  #配置sleuth
+  sleuth:
+    annotation:
+      enabled: false
+    enabled: false
+    circuitbreaker:
+      enabled: true
+    async:
+      configurer:
+        enabled: true
+    http:
+      enabled: true
+    sampler:
+      rate: 12
+      probability: 1.0
+    web:
+      enabled: true
+    feign:
+      enabled: true
+  zipkin:
+    base-url: http://localhost:9411
+    service:
+      name: ${spring.application.name}
+    compression:
+      enabled: true
+    #不开启zipkin
+    enabled: false
+    sender:
+      type: web
+    discovery-client-enabled: false
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/provider?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initialSize: 10
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: true
+      testOnReturn: true
+      poolPreparedStatements: true
+      filters: stat,wall,log4j,log4j2,config,common-log
+      #指定每个连接上PSCache的大小
+      maxPoolPreparedStatementPerConnectionSize: 20
+      #合并多个DruidDataSource的监控数据
+      useGlobalDataSourceStat: true
+      #通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      #异步初始化
+      async-init: true
+      #执行期间检查连接的可用性
+      check-execute-time: true
+      #连接数据类型
+      db-type: mysql
+      #开启功能
+      enable: true
+      web-stat-filter:
+        enabled: true
+      access-to-underlying-connection-allowed: true
+      connection-error-retry-attempts: 10
+      default-auto-commit: true
+      dup-close-log-enable: true
+      use-local-session-state: true
+      stat-view-servlet:
+        login-username: admin
+        login-password: 123456
+      fail-fast: true
+      filter:
+        commons-log:
+          connection-log-enabled: true
+          connection-close-after-log-enabled: true
+          connection-commit-after-log-enabled: true
+          connection-connect-after-log-enabled: true
+          connection-connect-before-log-enabled: true
+          connection-log-error-enabled: true
+          connection-rollback-after-log-enabled: true
+      query-timeout: 6000
+      keep-alive: true
+      transaction-threshold-millis: 5000
+      validation-query-timeout: 5000
+      transaction-query-timeout: 6000
+      keep-alive-between-time-millis: 6000
+      default-read-only: false
+      default-transaction-isolation: 1
+    continue-on-error: true
+    generate-unique-name: false
+#全部放开
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+#Dubbo的配置
+#注册prc
+dubbo:
+  application:
+    name: dubbo-eleuth-provider
+    id: ddubbo-eleuth-provider
+    architecture: dubbo-spring-boot
+  #dubbo协议
+  protocol:
+    name: dubbo
+    port: -1
+  monitor:
+    protocol: dubbo
+    address: N/A
+  #dubbo注册
+  registry:
+    id: ddubbo-eleuth-provider-service
+    address: localhost:8848
+    protocol: nacos
+    port: 8848
+    timeout: 2000
+    group: group
+  scan:
+    base-packages: com.turboic.cloud.api
+mybatis:
+  check-config-location: true
+  #config-location: classpath*:mapping/*Mapper.xml
+  configuration:
+    default-fetch-size: 100
+    #开启二级缓存
+    cache-enabled: true
+    call-setters-on-nulls: true
+    default-statement-timeout: 5000
+    multiple-result-sets-enabled: true
+    database-id: mysql
+    map-underscore-to-camel-case: true
+    #打印Mybatis查询的SQL日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #设置以及缓存作用域session，statement
+    #终极结论：
+    #1.将mybatis一级缓存级别设置为statement可以事实上达到禁用一级缓存的效果；
+    #2.启用mybatis一级缓存，将级别设置为session【或不做任何设置，mybaits默认就是这个级别】
+    local-cache-scope: session
+  lazy-initialization: false
+  mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: com.turboic.cloud.entity
+

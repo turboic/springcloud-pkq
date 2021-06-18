@@ -1,0 +1,1 @@
+docker run -dti --restart unless-stopped --name rabbitmq -e RABBITMQ_DEFAULT_USER=liebe -e RABBITMQ_DEFAULT_PASS=liebe -p 15672:15672 -p 5672:5672 rabbitmq:management

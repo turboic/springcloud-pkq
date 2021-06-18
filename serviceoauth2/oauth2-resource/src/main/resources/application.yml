@@ -1,0 +1,66 @@
+server:
+  port: 3003
+oauth2-server-url: http://localhost:3002
+spring:
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+      exclude: WEB-INF/**
+    freemarker:
+      cache: false
+    add-properties: true
+  security:
+    user:
+      name: admin
+      password: 123456
+    oauth2:
+      client:
+        client-id: resourceApp
+        client-secret: resourceApp
+        user-authorization-uri: ${oauth2-server-url}/oauth/authorize
+        access-token-uri: ${oauth2-server-url}/oauth/token
+        grant-type: password, implicit, refresh_token, authorization_code
+        scope: all
+      resource:
+        id: client
+        user-info-uri: ${oauth2-server-url}/user/current
+        prefer-token-info: false
+      authorization:
+        check-token-access: ${oauth2-server-url}/oauth/check_token
+  redis:
+    database: 1
+    host: localhost
+    port: 6379
+    jedis:
+      pool:
+        max-active: 20
+        max-idle: 10
+        min-idle: 5
+        max-wait: -1ms
+    timeout: 10000
+    client-name: redis
+  endpoint:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+#页面配置
+  thymeleaf:
+    cache:  false
+    prefix: classpath:/templates/
+    suffix: .html
+    check-template-location: true
+    mode: HTML5
+    enabled: true
+    encoding: UTF-8
+  resources:
+    add-mappings: true
+    chain:
+      compressed: true
+      strategy:
+        content:
+          enabled: true
+          paths: /**
