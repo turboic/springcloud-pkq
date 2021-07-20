@@ -20,5 +20,6 @@
         <module>transaction-service-provider</module>
         <module>transaction-nacos-config</module>
         <module>oauth2-liebe-server</module>-->
+        <module>transaction-mybatis-returnId</module>
     </modules>
 </project>

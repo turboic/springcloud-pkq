@@ -1,6 +1,5 @@
 server:
   port: 8067 #服务注册中心端口号
-
 eureka:
   instance:
     healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
@@ -9,10 +8,17 @@ eureka:
     healthcheck:
       enabled: true
     hostname: 127.0.0.1
+    prefer-ip-address: true
+    metadata-map:
+      user:
+        name: admin
+        password: 123456
   client:
     service-url:
       defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
     enabled: true
+    register-with-eureka: true
+    fetch-registry: true
 
 
 spring:

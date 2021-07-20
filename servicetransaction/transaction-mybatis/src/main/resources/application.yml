@@ -19,7 +19,7 @@ spring:
       password: 123456
   #数据库的连接配置
   datasource:
-    url: jdbc:mysql://localhost:3306/liebe?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+    url: jdbc:mysql://localhost:3306/liebe?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver

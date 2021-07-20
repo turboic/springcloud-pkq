@@ -9,4 +9,5 @@ import com.turboic.cloud.entity.Liebe;
 public interface LiebeService extends IService<Liebe> {
 
     void processing(Liebe liebe);
+    void saveData(Liebe liebe);
 }

@@ -17,7 +17,7 @@ public class TaskConfig {
         this.liebeService = liebeService;
     }
 
-    @Scheduled(cron = "0/1 * * * * ?")
+    //@Scheduled(cron = "0/1 * * * * ?")
     private void execute() {
         liebeService.processing(new Liebe());
     }

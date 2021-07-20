@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: spring-boot-admin-client
+server:
+  servlet:
+    context-path: /

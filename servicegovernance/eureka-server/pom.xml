@@ -10,12 +10,16 @@
   <artifactId>eureka-server</artifactId>
   <name>eureka-server</name>
   <url>http://www.example.com</url>
-
   <dependencies>
     <!-- 引入的Eureka-server -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+    </dependency>
+    <!--引入Spring Mvc功能-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -25,6 +29,15 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
+    </dependency>
+    <!--引入springboot监控信息-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-actuator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-actuator-autoconfigure</artifactId>
     </dependency>
     <!-- spring boot security安全认证启动器 -->
     <dependency>

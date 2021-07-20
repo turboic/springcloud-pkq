@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>transaction-mybatis</artifactId>
-  <name>transactionmy-batis</name>
+  <name>transaction-mybatis</name>
   <properties>
     <swagger.version>2.9.2</swagger.version>
     <mybatis.plus.version>3.3.2</mybatis.plus.version>

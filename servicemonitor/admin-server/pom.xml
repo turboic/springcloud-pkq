@@ -10,12 +10,9 @@
   <artifactId>admin-server</artifactId>
   <name>admin-server</name>
   <url>http://www.example.com</url>
-
   <properties>
     <admin-serevr.version>2.2.2</admin-serevr.version>
   </properties>
-
-
   <dependencies>
     <!--Admin Server-->
     <dependency>
@@ -29,7 +26,6 @@
       <artifactId>spring-boot-admin-server-ui</artifactId>
       <version>${admin-serevr.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -45,6 +41,16 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-actuator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-actuator-autoconfigure</artifactId>
+    </dependency>
+
     <!--在管理界面需要与JMX-Beans进行交互，需要引入jolokia的依赖 -->
     <dependency>
       <groupId>org.jolokia</groupId>

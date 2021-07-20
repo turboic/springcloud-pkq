@@ -1,0 +1,31 @@
+server:
+  port: 5001
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: 127.0.0.1
+    prefer-ip-address: true
+    metadata-map:
+      user:
+        name: ${spring.security.user.name}
+        password: ${spring.security.user.password}
+  client:
+    registryFetchIntervalSeconds: 5
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: true
+    register-with-eureka: true
+    fetch-registry: true
+
+
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+

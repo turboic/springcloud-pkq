@@ -1,27 +1,35 @@
 server:
   port: 5000 #admin-server暴露的访问端口
-
 eureka:
   instance:
+    leaseRenewalIntervalInSeconds: 10
     healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
     statusPageUrlPath: ${server.servlet.context-path}/actuator/info
     homePageUrl: ${server.servlet.context-path}/
     healthcheck:
       enabled: true
-    hostname: 127.0.0.1
+    hostname: localhost
+    prefer-ip-address: true
+    metadata-map:
+      user:
+        name: ${spring.security.user.name}
+        password: ${spring.security.user.password}
   client:
+    registryFetchIntervalSeconds: 5
     service-url:
       defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
     enabled: true
-
-
+    register-with-eureka: true
+    fetch-registry: true
 #暴露所有
 management:
   endpoints:
     web:
       exposure:
         include: '*'
-
+  endpoint:
+    health:
+      show-details: ALWAYS
 # 开启基于http basic的安全认证,eureka的访问用户名和密码
 spring:
   security:
@@ -33,14 +41,22 @@ spring:
       notify:
         discord:
           enabled: true
+          username: admin
       routes:
-          # spring boot默认开启env、metrics、dump、jolokia、info等节点，这里开启其它监控节点
+        # spring boot默认开启env、metrics、dump、jolokia、info等节点，这里开启其它监控节点
         endpoints: env,metrics,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,loggers,auditevents,hystrix.stream,activiti
         #admin-server中集成turbine-server
         turbine:
           clusters: default
           location: turbine-server
-
+      monitor:
+        default-timeout: 12000ms
+        default-retries: 3
+      hazelcast:
+        enabled: true
+      ui:
+        title: 'Cloud Admin Server'
+        remember-me-enabled: true
 #配置日志的输出路径
 logging:
   file:

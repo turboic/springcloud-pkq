@@ -60,6 +60,7 @@
         <module>service-CircuitBreaker</module>
         <module>service-fastdfs</module>
         <module>springboot-dubbo-xml</module>
+        <module>eureka-server-admin-demo</module>
     </modules>
 
     <dependencies>

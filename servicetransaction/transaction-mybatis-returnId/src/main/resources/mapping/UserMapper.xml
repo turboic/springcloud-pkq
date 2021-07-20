@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.turboic.cloud.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.turboic.cloud.entity.User">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="sex" jdbcType="VARCHAR" property="sex" />
+        <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    </resultMap>
+
+    <!--返回主键 形式1 -->
+    <insert id="insertUseGeneratedKeyAsId" parameterType="com.turboic.cloud.entity.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `test`.`User`(name,sex,birthday,address,mobile) VALUES(#{name}, #{sex},#{birthday},#{address},#{mobile})
+    </insert>
+
+    <!-- 返回主键 形式2 -->
+    <insert id="insertLastInsertId" parameterType="com.turboic.cloud.entity.User">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO `test`.`User`(name,sex,birthday,address,mobile) VALUES(#{name},#{sex},#{birthday},#{address},#{mobile})
+    </insert>
+
+</mapper>

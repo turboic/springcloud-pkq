@@ -1,0 +1,45 @@
+server:
+  port: 5000
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    healthCheckUrlPath: ${server.servlet.context-path}/actuator/health
+    statusPageUrlPath: ${server.servlet.context-path}/actuator/info
+    homePageUrl: ${server.servlet.context-path}/
+    healthcheck:
+      enabled: true
+    hostname: localhost
+    prefer-ip-address: true
+    metadata-map:
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
+  client:
+    registryFetchIntervalSeconds: 5
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:8001/eureka/
+    enabled: true
+    register-with-eureka: true
+    fetch-registry: true
+#暴露所有
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+  boot:
+    admin:
+      monitor:
+        default-timeout: 12000ms
+        default-retries: 3
+      ui:
+        title: 'Spring Cloud Admin Server'
+        remember-me-enabled: true
+
