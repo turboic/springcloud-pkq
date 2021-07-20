@@ -22,8 +22,8 @@ spring:
 #redis的配置
   redis:
     timeout: 60000
-    password:
-    host: 10.10.10.6
+    password: liebe
+    host: 127.0.0.1
     port: 6379
     client-name: redis-client
     jedis:
