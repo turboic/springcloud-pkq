@@ -1,10 +1,19 @@
 package com.turboic.cloud.request;
 
+import com.netflix.appinfo.ApplicationInfoManager;
+import com.netflix.discovery.DiscoveryManager;
+import com.netflix.discovery.endpoint.EndpointUtils;
 import com.turboic.cloud.pojo.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.serviceregistry.Registration;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,5 +60,25 @@ public class EurekaClientController {
         user.setName(name);
         user.setPassword("123456");
         return user;
+    }
+
+    @Autowired
+    private DiscoveryClient discoveryClient;
+
+
+    @GetMapping("/list")
+    public String list(){
+        List<String> nameList = discoveryClient.getServices();
+        if (CollectionUtils.isEmpty(nameList)) {
+            return "no eureka client instance !!!";
+        }
+        nameList.forEach(n->{
+            List<ServiceInstance> serviceInstances = discoveryClient.getInstances(n);
+
+        });
+
+        DiscoveryManager.getInstance().shutdownComponent();
+
+        return "success";
     }
 }
