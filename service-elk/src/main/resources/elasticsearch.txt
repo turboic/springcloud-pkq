@@ -1,0 +1,59 @@
+su elastic && /liebe/elasticsearch/bin/elasticsearch
+
+
+
+ps -ef | grep Elasticsearch | grep -v grep | awk '{print $2}'
+
+
+
+ps -ef | grep kibana | grep -v grep | awk '{print $2}'
+
+
+
+chown -R elastic:elastic /liebe/elasticsearch
+
+
+
+/liebe/kibana/bin/kibana --allow-root
+
+
+api
+创建索引
+
+curl -X PUT http://localhost:9200/my-index-20210808
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 8,  
+      "number_of_replicas": 2,
+      "hidden": false,
+      "refresh_interval": "5s",
+      "max_regex_length": 3000,
+      "gc_deletes": "60s",
+	    "write.wait_for_active_shards": "2"	  
+    }
+  },
+  "mappings": {
+	"properties": {
+      "image": { "type": "binary" },
+	  "leader": { "type": "boolean" },
+	  "company": { "type": "keyword" },
+	  "create_time": { "type": "long" },
+	  "birth": { "type": "date" },
+	  "address": { "type": "text" },
+	  "name": { "type": "text" },
+	  "mobile": { "type": "text" },
+	  "content": {
+          "type": "text",
+          "analyzer": "ik_max_word",
+          "search_analyzer": "ik_smart"
+       }
+	}	
+  }
+}
+
+
+========================================================
+curl -XPOST http://localhost:9200/index/my-index-20210808/2 -H 'Content-Type:application/json' -d'
+{"content":"8月7日0时至24时，北京无新增本地确诊病例、疑似病例和无症状感染者；无新增境外输入确诊病例、疑似病例和无症状感染者。北京时间今天（8月8日）下午4点，在北京市政府新闻办新闻发布厅，将召开疫情防控第235场新闻发布会。会上将通报疫情防控最新情况，并回答记者提问。"
+"leader":true,"company":"阿里巴巴","address":"中国浙江省杭州市滨江区","name":"电子商务"}
