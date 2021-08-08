@@ -1,15 +1,10 @@
 package com.turboic.cloud;
-
-import com.turboic.cloud.pojo.Clue;
-import com.turboic.cloud.util.FastJsonUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.util.Assert;
 
-import java.io.*;
-import java.util.Date;
+import java.io.File;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**

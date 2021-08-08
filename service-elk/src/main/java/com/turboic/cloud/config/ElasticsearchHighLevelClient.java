@@ -1,7 +1,8 @@
 package com.turboic.cloud.config;
-
 import org.apache.http.HttpHost;
+import org.apache.http.client.config.RequestConfig;
 import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,10 +10,13 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Configuration;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/***
+ * transport在高版本的Elasticsearch过期
+ * @author liebe
+ */
 
 @Configuration
 public class ElasticsearchHighLevelClient implements FactoryBean<RestHighLevelClient>, InitializingBean, DisposableBean {
@@ -25,6 +29,8 @@ public class ElasticsearchHighLevelClient implements FactoryBean<RestHighLevelCl
 
 
     private String host = "10.10.10.5:9200,10.10.10.6:9200,10.10.10.7:9200";
+
+    private String STAND_ALONE_HOST = "10.10.10.5:9200";
 
 
     /**
@@ -65,26 +71,33 @@ public class ElasticsearchHighLevelClient implements FactoryBean<RestHighLevelCl
 
     @Override
     public void afterPropertiesSet() {
-        restHighLevelClient = buildClient();
+        restHighLevelClient = restHighLevelClient();
     }
 
-    private RestHighLevelClient buildClient() {
+    private RestHighLevelClient restHighLevelClient() {
         try {
-            String[] hosts = host.split(",");
+            String[] hosts = STAND_ALONE_HOST.split(",");
             List<HttpHost> httpHosts = new ArrayList<>(hosts.length);
-            for (String node : hosts) {
-                HttpHost host = new HttpHost(
-                        node.split(":")[0],
-                        Integer.parseInt(node.split(":")[1]),
+            for (String host : hosts) {
+                HttpHost h = new HttpHost(
+                        host.split(":")[0],
+                        Integer.parseInt(host.split(":")[1]),
                         SCHEME);
-                httpHosts.add(host);
+                httpHosts.add(h);
             }
-            restHighLevelClient = new RestHighLevelClient(
-                    RestClient.builder(httpHosts.toArray(new HttpHost[0]))
 
-            );
+            RestClientBuilder restClientBuilder = RestClient.builder(httpHosts.toArray(new HttpHost[httpHosts.size()]));
+            restClientBuilder.setCompressionEnabled(true);
+            restClientBuilder.setStrictDeprecationMode(true);
+            restClientBuilder.setFailureListener(new RestClient.FailureListener());
+            restClientBuilder.setRequestConfigCallback(builder -> builder.setConnectTimeout(5000)
+                    .setSocketTimeout(5000)
+                    .setSocketTimeout(5000)
+                    .setAuthenticationEnabled(false)
+                    .setConnectionRequestTimeout(6000));
+            restHighLevelClient = new RestHighLevelClient(RestClient.builder(httpHosts.toArray(new HttpHost[0])));
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("初始化Elasticsearch Client 失败 = {}",e.getMessage());
         }
         return restHighLevelClient;
     }
