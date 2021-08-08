@@ -22,6 +22,8 @@ public class Liebe implements Serializable {
 
     private Long longTime;
 
+    private String image;
+
     public String getName() {
         return name;
     }
@@ -76,5 +78,13 @@ public class Liebe implements Serializable {
 
     public void setLongTime(Long longTime) {
         this.longTime = longTime;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
