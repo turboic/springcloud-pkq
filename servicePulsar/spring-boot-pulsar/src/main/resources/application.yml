@@ -1,0 +1,19 @@
+server:
+  port: 8080
+pulsar:
+  connectionTimeoutSec: 10
+  ioThreads: 10
+  isEnableTcpNoDelay: false
+  keepAliveIntervalSec: 20
+  listenerThreads: 10
+  maxBackoffIntervalSec: 10
+  operationTimeoutSec: 15
+  serviceUrl: pulsar://10.10.10.22:6650
+  startingBackoffIntervalMs: 100
+maven:
+  path: F:\\apache-maven-3.6.3\\repo
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456

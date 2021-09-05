@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: spring-boot-pulsar
+server:
+  servlet:
+    context-path: /
