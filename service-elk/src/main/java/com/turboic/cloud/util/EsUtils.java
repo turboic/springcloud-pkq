@@ -1,7 +1,11 @@
 package com.turboic.cloud.util;
 
 import com.turboic.cloud.config.ElasticsearchHighLevelClient;
+import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.admin.indices.alias.Alias;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -11,6 +15,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.support.ActiveShardCount;
 import org.elasticsearch.action.support.WriteRequest;
+import org.elasticsearch.client.Cancellable;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.CreateIndexResponse;
@@ -28,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,6 +50,71 @@ public class EsUtils {
         this.elasticsearchHighLevelClient = elasticsearchHighLevelClient;
     }
 
+    /**
+     * BiConsumer<BulkRequest, ActionListener<BulkResponse>> bulkConsumer =
+     *                 (request, bulkListener) ->
+     *                         client.getClient().bulkAsync(request, RequestOptions.DEFAULT, bulkListener);
+     *
+     *
+     *         bulkProcessor =  BulkProcessor.builder(bulkConsumer,
+     *                 new BulkProcessor.Listener() {
+     *                     @Override
+     *                     public void beforeBulk(long executionId, BulkRequest request) {
+     *                         logger.info("序号：{} ，开始执行 {} 条数据批量操作。", executionId, request.numberOfActions());
+     *                     }
+     *                     @Override
+     *                     public void afterBulk(long executionId, BulkRequest request, BulkResponse response) {
+     *                         // 在每次执行BulkRequest后调用，通过此方法可以获取BulkResponse是否包含错误
+     *                         if (response.hasFailures()) {
+     *                             logger.error("Bulk {} executed with failures", executionId);
+     *                         } else {
+     *                             logger.info("序号：{} ，执行 {} 条数据批量操作成功，共耗费{}毫秒。", executionId, request.numberOfActions(), response.getTook().getMillis());
+     *                         }
+     *                     }
+     *                     @Override
+     *                     public void afterBulk(long executionId, BulkRequest request, Throwable failure) {
+     *                         logger.error("序号：{} 批量操作失败，总记录数：{} ，报错信息为：{}", executionId, request.numberOfActions(), failure.getMessage());
+     *                     }
+     *
+     *                 })
+     *                 //每添加n个request,执行一次bulk操作
+     *                 .setBulkActions(Integer.valueOf(configVo.getBulkActions()).intValue())
+     *                 //每达到一定大小的请求时，执行一次bulk操作
+     *                 .setBulkSize(new ByteSizeValue(Integer.valueOf(configVo.getBulkSizeMb()).intValue(), ByteSizeUnit.MB))
+     *                 //每n秒执行一次bulk操作
+     *                 .setFlushInterval(TimeValue.timeValueSeconds(Integer.valueOf(configVo.getFlushIntervalSeconds()).intValue()))
+     *                //设置并发请求数，默认是1，表示允许执行1个并发请求，积累bulk requests和发送bulk是异步的
+     *                 .setConcurrentRequests(Integer.valueOf(configVo.getConcurrentRes()).intValue())
+     * //                .setBackoffPolicy(BackoffPolicy.exponentialBackoff(TimeValue.timeValueMillis(100), 3))
+     *                 .build();
+     *
+     *
+     *     }
+     */
+
+    public void bulkAsync (String index, Map<String,Object> map) throws IOException {
+        BulkRequest bulkRequest = new BulkRequest();
+
+        IndexRequest request = new IndexRequest();
+
+        request.index(index).source(map);
+
+        bulkRequest.add(request);
+
+        elasticsearchHighLevelClient.getObject().bulk(bulkRequest, RequestOptions.DEFAULT);
+
+        /*elasticsearchHighLevelClient.getObject().bulkAsync(bulkRequest, RequestOptions.DEFAULT, new ActionListener<BulkResponse>() {
+            @Override
+            public void onResponse(BulkResponse bulkItemResponses) {
+                logger.error("bulkAsync Elasticsearch Data Success = {}" ,FastJsonUtils.objectToJson(bulkItemResponses));
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                logger.error("bulkAsync Elasticsearch Data Exception = {}" ,e);
+            }
+        });*/
+    }
 
     public CreateIndexResponse create(String indexName) throws IOException {
         CreateIndexRequest createIndexRequest = new CreateIndexRequest(indexName);
@@ -199,10 +270,6 @@ public class EsUtils {
         BoolQueryBuilder boolBuilder = QueryBuilders.boolQuery();
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
         MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("context", "作者");
-        // RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery("createTime");
-        // rangeQueryBuilder.gte("2021-08-08T08:24:37.873Z");
-        // rangeQueryBuilder.lte("2021-08-08T08:24:37.873Z");
-        // boolBuilder.must(rangeQueryBuilder);
         boolBuilder.must(matchQueryBuilder);
         sourceBuilder.query(boolBuilder);
         sourceBuilder.from(0);

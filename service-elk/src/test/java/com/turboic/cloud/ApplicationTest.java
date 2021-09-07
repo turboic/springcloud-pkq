@@ -21,8 +21,12 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -106,6 +110,42 @@ public class ApplicationTest {
         String id = "ym69JHsBC3Pl1tH0ftti";
         DeleteResponse response = esUtils.delete(indexName,id);
         logger.info("SearchResponse = {}", FastJsonUtils.objectToJson(response));
+    }
+
+
+    @Test
+    public void bulkAsync() {
+        //map.put("CHAR_TYPE",'B');
+        //map.put("UPDATE_TIME",new Timestamp(System.currentTimeMillis()));
+
+
+        String indexName = "liebe_2021090723";
+        Map<String,Object> map = new HashMap<>();
+        map.put("NAME","姓名");
+        map.put("AGE",89);
+        map.put("CREATE_TIME",new Date());
+
+        map.put("BIG_DECIMAL",new BigDecimal(100));
+        map.put("CREATE_TIME",new Date());
+        map.put("RESOURCE_ID",202L);
+        map.put("VERSION",2.0);
+
+        map.put("PRICE",8.0d);
+        map.put("IS_TRUE",true);
+        map.put("IS_FALSE",false);
+
+        map.put("BYTE_TYPE","elasticsearch.txt".getBytes(StandardCharsets.UTF_8));
+
+        map.put("LONG_TYPE",System.currentTimeMillis());
+
+        map.put("IP","10.10.10.22/24");
+        map.put("LOCATION","41.12,12.28");
+
+        try {
+            esUtils.bulkAsync(indexName,map);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
