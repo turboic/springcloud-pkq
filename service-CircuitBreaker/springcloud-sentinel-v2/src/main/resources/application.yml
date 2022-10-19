@@ -1,0 +1,222 @@
+server:
+  port: 8081
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+  #数据库的连接配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/liebe?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      # 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时
+      initialSize: 3
+      # 最小连接池数量
+      minIdle: 5
+      # 最大连接池数量
+      maxActive: 10
+      # 配置获取连接等待超时的时间
+      maxWait: 10000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      # 验证连接有效与否的SQL，不同的数据配置不同
+      validationQuery: select 1
+      # 建议配置为true，不影响性能，并且保证安全性。
+      # 申请连接的时候检测，如果空闲时间大于
+      # timeBetweenEvictionRunsMillis，
+      # 执行validationQuery检测连接是否有效。
+      testWhileIdle: true
+      # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      # 这里建议配置为TRUE，防止取到的连接不可用
+      testOnBorrow: true
+      # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      testOnReturn: false
+      # 是否缓存preparedStatement，也就是PSCache。
+      # PSCache对支持游标的数据库性能提升巨大，比如说oracle。
+      # 在mysql5.5以下的版本中没有PSCache功能，建议关闭掉。
+      # 作者在5.5版本中使用PSCache，通过监控界面发现PSCache有缓存命中率记录，
+      # 该应该是支持PSCache。
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      # 属性类型是字符串，通过别名的方式配置扩展插件，
+      # 常用的插件有：
+      # 监控统计用的filter:stat
+      # 日志用的filter:log4j
+      # 防御sql注入的filter:wall
+      filters: stat
+  #nacos的配置
+  cloud:
+    nacos:
+      discovery:
+        cluster-name: DEFAULT
+        enabled: true
+        register-enabled: true
+        ip-delete-timeout: 30000
+        heart-beat-interval: 30000
+        group: DEFAULT_GROUP
+        server-addr: ${spring.cloud.nacos.server-addr}
+        username: ${spring.cloud.nacos.username}
+        password: ${spring.cloud.nacos.password}
+        watch:
+          enabled: true
+        secure: false
+        service: ${spring.application.name}
+        ephemeral: true
+        heart-beat-timeout: 30000
+        #向服务注册的ip地址，不设置，将会执行自动的探测
+        #ip: 127.0.0.1
+        weight: 2
+        instance-enabled: true
+        port: -1
+        watch-delay: 30000
+      username: nacos
+      password: nacos
+      server-addr: localhost:8848
+      #使用nacos的配置文件
+      config:
+        max-retry: 5
+        config-long-poll-timeout: 30000
+        prefix: ${spring.application.name}
+        namespace: default
+        context-path: nacos
+        server-addr: ${spring.cloud.nacos.server-addr}
+        group: DEFAULT_GROUP
+        username: ${spring.cloud.nacos.username}
+        password: ${spring.cloud.nacos.password}
+        refresh-enabled: true
+        enabled: true
+        name: ${spring.application.name}
+        cluster-name: nacos-cluster-name
+        encode: UTF-8
+    #配置sentinel
+    sentinel:
+      enabled: true
+      web-context-unify: true
+      metric:
+        charset: UTF-8
+      flow:
+        coldFactor: 3
+      transport:
+        dashboard: 127.0.0.1:8080
+        port: 8719
+        heartbeat-interval-ms: 30000
+        client-ip: 127.0.0.1
+      eager: true
+      filter:
+        url-patterns: /**
+        enabled: true
+      log:
+        switch-pid: false
+      http-method-specify: false
+      datasource:
+        liebe:
+          nacos:
+            server-addr: ${spring.cloud.nacos.server-addr}
+            data-id: ${spring.application.name}-sentinel
+            group-id: SENTINEL
+            data-type: json
+            rule-type: flow
+#dubbo配置
+# Base packages to scan Dubbo Components (e.g @Service , @Reference)
+#配置数据库
+mybatis-plus:
+  # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml
+  # 如果是放在resource目录 classpath:/mapper/*Mapper.xml
+  mapper-locations: classpath:/mapper/**/**.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.turboic.cloud.entity
+  global-config:
+  #刷新mapper 调试神器
+    db-config:
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+      id-type: UUID
+      #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+      field-strategy: 2
+      #驼峰下划线转换
+      column-underline: false
+      #数据库大写下划线转换
+      capital-mode: true
+      #逻辑删除配置
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+    refresh: true
+  configuration:
+  #配置返回数据库(column下划线命名&&返回java实体是驼峰命名)，自动匹配无需as（没开启这个，SQL需要写as： select user_id as userId）
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    #配置JdbcTypeForNull, oracle数据库必须配置
+    jdbc-type-for-null: 'null'
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    database-id: mysql
+#暴露
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+#开始feign sentinel
+feign:
+  sentinel:
+    enabled: true
+
+#dubbo的服务配置
+dubbo:
+  application:
+    id: ${spring.application.name}
+    name: ${spring.application.name}
+    architecture: dubbo-spring-cloud
+    registry:
+      id: ${spring.application.name}
+      address: ${spring.cloud.nacos.discovery.server-addr}
+      username: ${spring.cloud.nacos.username}
+      password: ${spring.cloud.nacos.password}
+      timeout: 30000
+      check: true
+      weight: 1
+      group: DEFAULT_GROUP
+      protocol: nacos
+      port: 8848
+    scan:
+      base-packages: com.turboic.cloud.dubbo
+    monitor:
+      protocol: nacos
+      address: nacos://${spring.cloud.nacos.discovery.server-addr}
+      username: ${spring.cloud.nacos.username}
+      password: ${spring.cloud.nacos.password}
+      group: DEFAULT_GROUP
+      isDefault: true
+    qos-accept-foreign-ip: true
+    qos-enable: true
+  #协议配置
+  protocol:
+    name: dubbo
+    #port: 20881
+    port: -1
+    transporter: netty
+    dispatcher: all
+    threadpool: fixed
+    iothreads: 9
+    corethreads: 3
+    threadname: thread-protocol
+    server: netty
+    client: netty
+    threads: 100
+    queues: 0
+    buffer: 8192
+    accepts: 1000
+    payload: 8388608
+  #消费者配置
+  consumer:
+    timeout: 3000
+    client: netty
+    check: false
+  #订阅服务
+  cloud:
+    subscribed-services: 'sentinel-nacos-provider'
+

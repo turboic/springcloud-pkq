@@ -13,7 +13,7 @@ public class DubProviderServiceImpl implements CommonService{
     private static final Logger log = Logger.getLogger(DubProviderServiceImpl.class.getName());
     @Override
     public String test(String dub) {
-        log.info("dumbo服务提供者接收调用请求={}"+dub);
-        return "hello " +dub;
+        log.info("当你看到这条消息显示时候，说明dubbo的服务消费微服务调用成功了={}"+dub);
+        return "hello " +dub + ",当你看到这条消息显示时候，说明dubbo的服务消费微服务调用成功了";
     }
 }

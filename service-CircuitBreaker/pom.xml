@@ -16,5 +16,6 @@
         <module>dubbo-common-interface</module>
         <module>springcloud-sentinel</module>
         <module>sentinel-nacos-provider</module>
+        <module>springcloud-sentinel-v2</module>
     </modules>
 </project>

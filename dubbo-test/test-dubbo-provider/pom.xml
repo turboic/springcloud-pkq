@@ -55,7 +55,7 @@
         </dependency>
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>dubbo-api</artifactId>
+            <artifactId>test-dubbo-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
